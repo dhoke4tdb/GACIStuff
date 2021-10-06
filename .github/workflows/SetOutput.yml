@@ -9,6 +9,9 @@ jobs:
     strategy:
       matrix:
         os: [windows-2016, windows-2019, ubuntu-20.04]
+    env:
+      TILEDB_HOME: ${{ github.workspace }}
+      TILEDB_GA_IMAGE_NAME: ${{ matrix.os }}
     steps:
       - name: 'set the output'
         id: initoutput
@@ -18,17 +21,63 @@ jobs:
           echo "::set-output name=TILEDB_CI_SUCCESS::1"
           echo "after setting output"
 
+      - name: 'winrunner programmatic set output'
+        id: progsetoutput
+        if: ${{ (matrix.os == 'ubuntu-20.04') }}
+        shell: bash
+        run: |
+          cd src/setoutput
+          g++ setoutput.cc
+          ./setoutput.exe
+        
+      - name: 'winrunner programmatic set output'
+        id: progsetoutput
+        if: ${{ (matrix.os == 'windows-2016') || (matrix.os == 'windows-2019') }}
+        shell: powershell
+        run: |
+          if ($env:TILEDB_GA_IMAGE_NAME -eq "windows-2016") {
+            $env:Path += ";C:\Program Files (x86)\Microsoft Visual Studio\2017\${VSCategory}\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin"
+          } elseif ($env:TILEDB_GA_IMAGE_NAME -eq "windows-2016") {
+            $env:Path += ";C:\Program Files (x86)\Microsoft Visual Studio\2019\${VSCategory}\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin"
+          }
+          cd src\setoutput
+          cl setoutput.cc
+          .\setoutput.exe
+        
       - name: 'check the output'
         id: checkoutput
         shell: bash
         run: |
             echo A - ...TILEDB_CI_SUCCESS... - "${{ steps.initoutput.outputs.TILEDB_CI_SUCCESS }}"
             echo B - ...TILEDB_CI_SUCCESS... - ${{ steps.initoutput.outputs.TILEDB_CI_SUCCESS }}
+            echo "...TILEDB_CI_W2016_SUCCESS... - ${{ steps.initoutput.outputs.TILEDB_CI_W2016_SUCCESS }}"
+            echo "...TILEDB_CI_W2019_SUCCESS... - ${{ steps.initoutput.outputs.TILEDB_CI_W2019_SUCCESS }}"
+            echo "...TILEDB_CI_U2004_SUCCESS... - ${{ steps.initoutput.outputs.TILEDB_CI_U2004_SUCCESS }}
             # tiledb_unit is configured to set a job-level variable TILEDB_CI_SUCCESS=1
             # following the test run. If this variable is not set, the build should fail.
             # see https://github.com/TileDB-Inc/TileDB/pull/1400 (5f0623f4d3)
             if [[ "${{ steps.initoutput.outputs.TILEDB_CI_SUCCESS }}" -ne 1 ]]; then
-              exit 1;
+              #exit 1;
+              echo "${{ steps.initoutput.outputs.TILEDB_CI_SUCCESS }} -ne 1"
+            else
+              echo "${{ steps.initoutput.outputs.TILEDB_CI_SUCCESS }} -eq 1"
             fi
-            echo "TILEDB_CI_SUCCESS == 1, yeah!"
+            if [[ "${{ steps.initoutput.outputs.TILEDB_CI_W2016_SUCCESS }}" -ne 1 ]]; then
+              #exit 1;
+              echo "${{ steps.initoutput.outputs.TILEDB_CI_W2016_SUCCESS }} -ne 1"
+            else
+              echo "${{ steps.initoutput.outputs.TILEDB_CI_W2016_SUCCESS }} -eq 1"
+            fi
+            if [[ "${{ steps.initoutput.outputs.TILEDB_CI_W2019_SUCCESS }}" -ne 1 ]]; then
+              #exit 1;
+              echo "${{ steps.initoutput.outputs.TILEDB_CI_W2019_SUCCESS }} -ne 1"
+            else
+              echo "${{ steps.initoutput.outputs.TILEDB_CI_W2019_SUCCESS }} -eq 1"
+            fi
+            if [[ "${{ steps.initoutput.outputs.TILEDB_CI_U2004_SUCCESS }}" -ne 1 ]]; then
+              #exit 1;
+              echo "${{ steps.initoutput.outputs.TILEDB_CI_U2004_SUCCESS }} -ne 1"
+            else
+              echo "${{ steps.initoutput.outputs.TILEDB_CI_U2004_SUCCESS }} -eq 1"
+            fi
         

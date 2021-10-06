@@ -37,6 +37,7 @@ jobs:
           pwd
           ls
           which g++
+          g++ --version
           g++ setoutput.cc
           ./setoutput.exe
         

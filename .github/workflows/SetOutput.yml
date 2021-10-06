@@ -47,9 +47,10 @@ jobs:
         shell: powershell
         run: |
           # should already be in github.workspace directory with repository checked out
+          $VSCategory = "Enterprise" # alternate 'Community'
           if ($env:TILEDB_GA_IMAGE_NAME -eq "windows-2016") {
             $env:Path += ";C:\Program Files (x86)\Microsoft Visual Studio\2017\${VSCategory}\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin"
-          } elseif ($env:TILEDB_GA_IMAGE_NAME -eq "windows-2016") {
+          } elseif ($env:TILEDB_GA_IMAGE_NAME -eq "windows-2019") {
             $env:Path += ";C:\Program Files (x86)\Microsoft Visual Studio\2019\${VSCategory}\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin"
           }
           ls

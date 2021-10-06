@@ -21,11 +21,17 @@ jobs:
           echo "::set-output name=TILEDB_CI_SUCCESS::1"
           echo "after setting output"
 
+      - name: Prepare git
+        run: git config --global core.autocrlf false
+
+      - uses: actions/checkout@v2
+
       - name: 'winrunner programmatic set output'
         id: progsetoutputlinux
         if: ${{ (matrix.os == 'ubuntu-20.04') }}
         shell: bash
         run: |
+          # should already be in github.workspace directory with repository checked out
           cd src/setoutput
           g++ setoutput.cc
           ./setoutput.exe
@@ -35,6 +41,7 @@ jobs:
         if: ${{ (matrix.os == 'windows-2016') || (matrix.os == 'windows-2019') }}
         shell: powershell
         run: |
+          # should already be in github.workspace directory with repository checked out
           if ($env:TILEDB_GA_IMAGE_NAME -eq "windows-2016") {
             $env:Path += ";C:\Program Files (x86)\Microsoft Visual Studio\2017\${VSCategory}\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin"
           } elseif ($env:TILEDB_GA_IMAGE_NAME -eq "windows-2016") {

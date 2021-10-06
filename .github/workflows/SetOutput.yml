@@ -38,7 +38,7 @@ jobs:
           ls
           which g++
           g++ --version
-          g++ setoutput.cc
+          g++ setoutput.cc -o setoutput.exe
           ./setoutput.exe
         
       - name: 'winrunner programmatic set output'

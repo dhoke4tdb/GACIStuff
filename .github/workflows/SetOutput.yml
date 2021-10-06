@@ -26,13 +26,17 @@ jobs:
 
       - uses: actions/checkout@v2
 
-      - name: 'winrunner programmatic set output'
+      - name: 'lnxrunner programmatic set output'
         id: progsetoutputlinux
-        if: ${{ (matrix.os == 'ubuntu-20.04') }}
+        if: ${{ matrix.os == 'ubuntu-20.04' }}
         shell: bash
         run: |
           # should already be in github.workspace directory with repository checked out
+          ls
           cd src/setoutput
+          pwd
+          ls
+          which g++
           g++ setoutput.cc
           ./setoutput.exe
         
@@ -47,7 +51,9 @@ jobs:
           } elseif ($env:TILEDB_GA_IMAGE_NAME -eq "windows-2016") {
             $env:Path += ";C:\Program Files (x86)\Microsoft Visual Studio\2019\${VSCategory}\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin"
           }
+          ls
           cd src\setoutput
+          cmd /c "cd"
           cl setoutput.cc
           .\setoutput.exe
         

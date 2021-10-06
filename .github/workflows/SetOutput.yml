@@ -1,0 +1,35 @@
+name: Set-Output exploration
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-2016, windows-2019, ubuntu-20.04]
+
+    steps:
+      name: 'set the output'
+      id: initoutput
+      shell: bash
+      run: |
+        echo "before setting output"
+        echo "::set-output name=TILEDB_CI_SUCCESS::1"
+        echo "after setting output"
+
+      name: 'check the output'
+      id: checkoutput
+      shell: bash
+      run: |
+          echo A - ...TILEDB_CI_SUCCESS... - "${{ steps.initoutput.outputs.TILEDB_CI_SUCCESS }}"
+          echo B - ...TILEDB_CI_SUCCESS... - ${{ steps.initoutput.outputs.TILEDB_CI_SUCCESS }}
+          # tiledb_unit is configured to set a job-level variable TILEDB_CI_SUCCESS=1
+          # following the test run. If this variable is not set, the build should fail.
+          # see https://github.com/TileDB-Inc/TileDB/pull/1400 (5f0623f4d3)
+          if [[ "${{ steps.initoutput.outputs.TILEDB_CI_SUCCESS }}" -ne 1 ]]; then
+            exit 1;
+          fi
+          echo "TILEDB_CI_SUCCESS == 1, yeah!"
+        

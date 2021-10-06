@@ -22,7 +22,7 @@ jobs:
           echo "after setting output"
 
       - name: 'winrunner programmatic set output'
-        id: progsetoutput
+        id: progsetoutputlinux
         if: ${{ (matrix.os == 'ubuntu-20.04') }}
         shell: bash
         run: |
@@ -31,7 +31,7 @@ jobs:
           ./setoutput.exe
         
       - name: 'winrunner programmatic set output'
-        id: progsetoutput
+        id: progsetoutputwindows
         if: ${{ (matrix.os == 'windows-2016') || (matrix.os == 'windows-2019') }}
         shell: powershell
         run: |
@@ -62,22 +62,22 @@ jobs:
             else
               echo "${{ steps.initoutput.outputs.TILEDB_CI_SUCCESS }} -eq 1"
             fi
-            if [[ "${{ steps.initoutput.outputs.TILEDB_CI_W2016_SUCCESS }}" -ne 1 ]]; then
+            if [[ "${{ steps.progsetoutputwindows.outputs.TILEDB_CI_W2016_SUCCESS }}" -ne 1 ]]; then
               #exit 1;
-              echo "${{ steps.initoutput.outputs.TILEDB_CI_W2016_SUCCESS }} -ne 1"
+              echo "${{ steps.progsetoutputwindows.outputs.TILEDB_CI_W2016_SUCCESS }} -ne 1"
             else
-              echo "${{ steps.initoutput.outputs.TILEDB_CI_W2016_SUCCESS }} -eq 1"
+              echo "${{ steps.progsetoutputwindows.outputs.TILEDB_CI_W2016_SUCCESS }} -eq 1"
             fi
-            if [[ "${{ steps.initoutput.outputs.TILEDB_CI_W2019_SUCCESS }}" -ne 1 ]]; then
+            if [[ "${{ steps.progsetoutputwindows.outputs.TILEDB_CI_W2019_SUCCESS }}" -ne 1 ]]; then
               #exit 1;
-              echo "${{ steps.initoutput.outputs.TILEDB_CI_W2019_SUCCESS }} -ne 1"
+              echo "${{ steps.progsetoutputwindows.outputs.TILEDB_CI_W2019_SUCCESS }} -ne 1"
             else
-              echo "${{ steps.initoutput.outputs.TILEDB_CI_W2019_SUCCESS }} -eq 1"
+              echo "${{ steps.progsetoutputwindows.outputs.TILEDB_CI_W2019_SUCCESS }} -eq 1"
             fi
-            if [[ "${{ steps.initoutput.outputs.TILEDB_CI_U2004_SUCCESS }}" -ne 1 ]]; then
+            if [[ "${{ steps.progsetoutputlinux.outputs.TILEDB_CI_U2004_SUCCESS }}" -ne 1 ]]; then
               #exit 1;
-              echo "${{ steps.initoutput.outputs.TILEDB_CI_U2004_SUCCESS }} -ne 1"
+              echo "${{ steps.progsetoutputlinux.outputs.TILEDB_CI_U2004_SUCCESS }} -ne 1"
             else
-              echo "${{ steps.initoutput.outputs.TILEDB_CI_U2004_SUCCESS }} -eq 1"
+              echo "${{ steps.progsetoutputlinux.outputs.TILEDB_CI_U2004_SUCCESS }} -eq 1"
             fi
-        
+

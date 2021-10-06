@@ -53,6 +53,11 @@ jobs:
           } elseif ($env:TILEDB_GA_IMAGE_NAME -eq "windows-2019") {
             $env:Path += ";C:\Program Files (x86)\Microsoft Visual Studio\2019\${VSCategory}\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin"
           }
+          else {
+            write-host "unexpected name, $env:TILEDB_GA_IMAGE_NAME"
+            return -1
+          }
+          write-host $env:PATH
           ls
           cd src\setoutput
           cmd /c "cd"

@@ -36,9 +36,13 @@ jobs:
           cd src/setoutput
           pwd
           ls
-          which g++
-          g++ --version
-          g++ setoutput.cc -o setoutput.exe
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release ..
+          cmake --build . --config Release
+          #which g++
+          #g++ --version
+          #g++ setoutput.cc -o setoutput.exe
           ./setoutput.exe
         
       - name: 'winrunner programmatic set output'
@@ -50,8 +54,12 @@ jobs:
           $VSCategory = "Enterprise" # alternate 'Community'
           if ($env:TILEDB_GA_IMAGE_NAME -eq "windows-2016") {
             $env:Path += ";C:\Program Files (x86)\Microsoft Visual Studio\2017\${VSCategory}\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin"
+            #$env:Path += ";C:\Program Files (x86)\Microsoft Visual Studio\2017\${VSCategory}\VC\auxiliary\build"
+            #"C:\Program Files (x86)\Microsoft Visual Studio\2016\${VSCategory}\VC\Auxiliary\Build\vcvars64.bat"
           } elseif ($env:TILEDB_GA_IMAGE_NAME -eq "windows-2019") {
             $env:Path += ";C:\Program Files (x86)\Microsoft Visual Studio\2019\${VSCategory}\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin"
+            #$env:Path += ";C:\Program Files (x86)\Microsoft Visual Studio\2019\${VSCategory}\VC\auxiliary\build"
+            #"C:\Program Files (x86)\Microsoft Visual Studio\2019\${VSCategory}\VC\Auxiliary\Build\vcvars64.bat"
           }
           else {
             write-host "unexpected name, $env:TILEDB_GA_IMAGE_NAME"
@@ -61,7 +69,11 @@ jobs:
           ls
           cd src\setoutput
           cmd /c "cd"
-          cl setoutput.cc
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release ..
+          cmake --build . --config Release
+          #cl setoutput.cc
           .\setoutput.exe
         
       - name: 'check the output'

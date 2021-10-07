@@ -39,11 +39,11 @@ jobs:
           mkdir build
           cd build
           cmake -DCMAKE_BUILD_TYPE=Release ..
-          cmake --build . --config Release
+          cmake --build .
           #which g++
           #g++ --version
           #g++ setoutput.cc -o setoutput.exe
-          ./setoutput.exe
+          ./setoutput
         
       - name: 'winrunner programmatic set output'
         id: progsetoutputwindows
@@ -74,7 +74,7 @@ jobs:
           cmake -DCMAKE_BUILD_TYPE=Release ..
           cmake --build . --config Release
           #cl setoutput.cc
-          .\setoutput.exe
+          .\Release\setoutput.exe
         
       - name: 'check the output'
         id: checkoutput

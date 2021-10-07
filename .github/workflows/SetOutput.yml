@@ -125,25 +125,30 @@ jobs:
             # tiledb_unit is configured to set a job-level variable TILEDB_CI_SUCCESS=1
             # following the test run. If this variable is not set, the build should fail.
             # see https://github.com/TileDB-Inc/TileDB/pull/1400 (5f0623f4d3)
-            if ( "${{ steps.initoutput.outputs.TILEDB_CI_SUCCESS }}" -ne 1 ) {
+            if ( 1 -ne 1) {
+              write-host "1 -ne 1"
+            } else {
+              write-host "! 1 -ne 1, ???"
+            }
+            if ( ${{ steps.initoutput.outputs.TILEDB_CI_SUCCESS }} -ne 1 ) {
               #exit 1;
               write-host "${{ steps.initoutput.outputs.TILEDB_CI_SUCCESS }} -ne 1"
             } else {
               write-host "${{ steps.initoutput.outputs.TILEDB_CI_SUCCESS }} -eq 1"
             }
-            #~ if ( "${{ steps.progsetoutputwindows.outputs.TILEDB_CI_W2016_SUCCESS }}" != 1 ) {
+            #~ if ( "${{ steps.progsetoutputwindows.outputs.TILEDB_CI_W2016_SUCCESS }}" -ne 1 ) {
               #~ #exit 1;
               #~ echo "${{ steps.progsetoutputwindows.outputs.TILEDB_CI_W2016_SUCCESS }} -ne 1"
             #~ } else {
               #~ echo "${{ steps.progsetoutputwindows.outputs.TILEDB_CI_W2016_SUCCESS }} -eq 1"
             #~ }
-            #~ if ( "${{ steps.progsetoutputwindows.outputs.TILEDB_CI_W2019_SUCCESS }}" != 1 ) {
+            #~ if ( "${{ steps.progsetoutputwindows.outputs.TILEDB_CI_W2019_SUCCESS }}" -ne 1 ) {
               #~ #exit 1;
               #~ echo "${{ steps.progsetoutputwindows.outputs.TILEDB_CI_W2019_SUCCESS }} -ne 1"
             #~ } else {
               #~ echo "${{ steps.progsetoutputwindows.outputs.TILEDB_CI_W2019_SUCCESS }} -eq 1"
             #~ }
-            #~ if ( "${{ steps.progsetoutputlinux.outputs.TILEDB_CI_U2004_SUCCESS }}" != 1 ) {
+            #~ if ( "${{ steps.progsetoutputlinux.outputs.TILEDB_CI_U2004_SUCCESS }}" -ne 1 ) {
               #~ #exit 1;
               #~ echo "${{ steps.progsetoutputlinux.outputs.TILEDB_CI_U2004_SUCCESS }} -ne 1"
             #~ } else {

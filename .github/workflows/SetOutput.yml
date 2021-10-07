@@ -115,7 +115,7 @@ jobs:
 
       - name: 'check the output again from powershell'
         id: checkoutput2
-        shell: powershell
+        shell: pwsh
         run: |
             write-host echo A - ...TILEDB_CI_SUCCESS... - "${{ steps.initoutput.outputs.TILEDB_CI_SUCCESS }}"
             write-host echo B - ...TILEDB_CI_SUCCESS... - ${{ steps.initoutput.outputs.TILEDB_CI_SUCCESS }}
